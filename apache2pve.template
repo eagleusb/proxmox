@@ -1,0 +1,23 @@
+<VirtualHost *:443>
+
+ServerName nomdedomaine.tld
+
+ProxyPreserveHost Off
+ProxyRequests Off
+ProxyPass / https://localhost:8006/
+ProxyPassReverse / https://localhost:8006/
+
+
+SSLEngine on
+SSLProxyEngine On
+SSLCertificateFile /etc/pve/local/pve-ssl.pem
+SSLCertificateKeyFile /etc/pve/local/pve-ssl.key
+
+
+ErrorLog /var/log/pveproxy/apache2_error.log
+# Possible values include: debug, info, notice, warn, error, crit,
+# alert, emerg.
+LogLevel warn
+CustomLog /var/log/pveproxy/apache2_access.log combined
+
+</VirtualHost>
