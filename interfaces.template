@@ -1,0 +1,45 @@
+auto lo
+iface lo inet loopback
+auto eth0
+iface eth0 inet manual
+        post-up ethtool -G eth0 rx 4096 tx 4096
+auto eth1
+iface eth1 inet manual
+        post-up ethtool -G eth1 rx 4096 tx 4096
+
+auto bond0
+iface bond0 inet manual
+        slaves eth0 eth1
+        bond_mode active-backup
+        bond_miimon 100
+
+auto vmbr100
+iface vmbr100 inet static
+        address 192.168.200.101
+        netmask 255.255.255.0
+        gateway 192.168.200.1
+        #pointopoint 192.168.200.1
+        bridge_ports bond0
+        bridge_stp off
+        bridge_fd 0
+        post-up echo 1 > /proc/sys/net/ipv4/conf/all/proxy_arp
+        post-up echo 1 > /proc/sys/net/ipv4/ip_forward
+        post-up echo 2 > /proc/sys/net/ipv4/conf/all/arp_announce
+
+auto vmbr0
+iface vmbr0 inet static
+        address 192.168.200.101
+        netmask 255.255.255.255
+        bridge_ports none
+        bridge_stp off
+        bridge_fd 0
+        post-up route add 192.168.200.151 dev vmbr0
+
+auto vmbr1
+iface vmbr1 inet static
+        address 192.168.200.101
+        netmask 255.255.255.255
+        bridge_ports none
+        bridge_stp off
+        bridge_fd 0
+        post-up route add 192.168.200.150 dev vmbr1
