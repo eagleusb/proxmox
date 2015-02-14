@@ -1,6 +1,6 @@
 #It is possible to configure apache2 like access control lists. Values are read from file /etc/default/pveproxy
 
-ALLOW_FROM="10.0.0.1-10.0.0.5,192.168.0.0/22"
+ALLOW_FROM="10.0.0.0/8,192.168.0.0/16,127.0.0.0/8"
 DENY_FROM="all"
 POLICY="allow"
 CIPHERS="HIGH:MEDIUM:!aNULL:!MD5"
